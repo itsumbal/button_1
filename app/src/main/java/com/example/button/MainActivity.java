@@ -1,6 +1,8 @@
 package com.example.button;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -67,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (id == R.id.logout) {
+            SharedPreferences preferences =getSharedPreferences("ActivityPREF",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
             finish();
