@@ -1,5 +1,6 @@
 package com.example.button;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -61,9 +62,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+
+        if (id == R.id.logout) {
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
         return super.onOptionsItemSelected(item);

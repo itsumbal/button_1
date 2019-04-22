@@ -9,7 +9,7 @@
     android:background="#ff4646"
 
 
-    tools:context="com.example.button.LoginActivity">
+    tools:context="com.example.button.SignupActivity">
 
     <!-- Login progress -->
     <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
@@ -22,12 +22,13 @@
         android:id="@+id/imageView"
         android:background="@drawable/logo" />
 
-    <ScrollView android:id="@+id/login_form"
+    <ScrollView android:id="@+id/signup_form"
         android:layout_width="match_parent"
         android:background="@drawable/pnlogin"
         android:padding="20dp"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:fillViewport="false">
 
         <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
@@ -40,10 +41,17 @@
                 android:textSize="16dp"
                 android:singleLine="true"
                 android:maxLines="1"
-                android:id="@+id/username"
+                android:id="@+id/susername"
                 android:hint="Username" />
 
-            <EditText android:id="@+id/password" android:layout_width="match_parent"
+            <EditText android:id="@+id/spassword" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="@string/prompt_password"
+                android:layout_marginTop="2dp"
+                android:textSize="16dp"
+                android:imeOptions="actionUnspecified" android:inputType="textPassword"
+                android:maxLines="1" android:singleLine="true" />
+
+            <EditText android:id="@+id/cpassword" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_password"
                 android:layout_marginTop="2dp"
                 android:textSize="16dp"
@@ -53,26 +61,12 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:id="@+id/LinearLayout02"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true">
         <Button
-            android:id="@+id/login"
+            android:id="@+id/signup1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Login">
-        </Button>
-        <Button
-            android:id="@+id/signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="50dp"
             android:text="Sign up">
         </Button>
-    </LinearLayout>
 
 </LinearLayout>
 

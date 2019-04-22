@@ -224,18 +224,9 @@ public class FragmentContacts extends Fragment {
         values.put(DbHelper.KEY_NAME,name);
         values.put(DbHelper.KEY_PHONE,phone );
 
-      //  System.out.println("");
-      //  if(isUpdate)
-      //  {
-            //update database with new data
-       //     dataBase.update(DbHelper.TABLE_NAME, values, DbHelper.KEY_ID+"="+id, null);
-       // }
-       // else
-       // {
-            //insert data into database
+
             dataBase.insert(DbHelper.TABLE_NAME, null, values);
-       // }
-        //close database
+
         dataBase.close();
     }
 

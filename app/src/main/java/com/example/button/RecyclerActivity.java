@@ -36,11 +36,6 @@ public class RecyclerActivity extends AppCompatActivity {
         setContentView(R.layout.recyler_view);
 
 
-    /*  for(int i=0;i<20;i++) {
-          MyListData lis = new MyListData("name", "02134568643");
-          myListData.add(lis);
-      }
-*/
         Button button = (Button)findViewById(R.id.button1);
         final  RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         Button done = (Button) findViewById(R.id.done);
@@ -104,7 +99,7 @@ public class RecyclerActivity extends AppCompatActivity {
                 Manifest.permission.READ_CONTACTS))
         {
 
-            Toast.makeText(RecyclerActivity.this,"CONTACTS permission allows us to Access CONTACTS app", Toast.LENGTH_LONG).show();
+//            Toast.makeText(RecyclerActivity.this,"CONTACTS permission allows us to Access CONTACTS app", Toast.LENGTH_LONG).show();
 
         } else {
 
