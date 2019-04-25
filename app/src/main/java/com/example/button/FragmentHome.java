@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.content.SharedPreferences;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,6 +73,7 @@ public class FragmentHome extends Fragment {
 
         locator = Locator.getLocator(getActivity());
         mHelper = DbHelper.getInstance(getContext());
+
 
         ImageButton panic = (ImageButton) view.findViewById(R.id.btnSOS);
 
@@ -220,6 +222,7 @@ public class FragmentHome extends Fragment {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         return contact_list;
     }
 
