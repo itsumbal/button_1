@@ -3,8 +3,10 @@ package com.example.button;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -35,8 +37,7 @@ public class FragmentContacts extends Fragment {
     private EditText edit_name, edit_phone;
     private DbHelper mHelper;
     private SQLiteDatabase dataBase;
-    private String id, name, phone;
-    private boolean isUpdate;
+    private String id, name, phone,cuser;
 
     private ArrayList<String> userId = new ArrayList<String>();
     private ArrayList<String> user_Name = new ArrayList<String>();
@@ -56,7 +57,10 @@ public class FragmentContacts extends Fragment {
         Button btnAdd = (Button) view.findViewById(R.id.btnAddContact);
 
         mHelper = DbHelper.getInstance(getContext());
-
+        SharedPreferences pref = getContext().getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edt = pref.edit();
+        String s=pref.getString("username",null);
+        cuser=s;
 
         displayData();
 
@@ -223,6 +227,7 @@ public class FragmentContacts extends Fragment {
 
         values.put(DbHelper.KEY_NAME,name);
         values.put(DbHelper.KEY_PHONE,phone );
+        values.put(DbHelper.KEY_CUSER,cuser);
 
 
             dataBase.insert(DbHelper.TABLE_NAME, null, values);
@@ -234,7 +239,7 @@ public class FragmentContacts extends Fragment {
     private void displayData()
     {
         dataBase = mHelper.getWritableDatabase();
-        Cursor mCursor = dataBase.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME, null);
+        Cursor mCursor = dataBase.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME +" WHERE " +DbHelper.KEY_CUSER+ " = + '"+cuser+"'", null);
 
         userId.clear();
         user_Name.clear();

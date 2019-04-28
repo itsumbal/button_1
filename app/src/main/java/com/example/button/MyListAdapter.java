@@ -2,7 +2,9 @@ package com.example.button;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +29,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     private ArrayList<String> userId = new ArrayList<String>();
     private ArrayList<String> user_Name = new ArrayList<String>();
     private ArrayList<String> user_Phone = new ArrayList<String>();
-
+    private String cuser;
     private ListView userList;
     DisplayAdapter disadpt;
 
@@ -55,6 +57,12 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             public void onClick(View view) {
 
                 mHelper = DbHelper.getInstance(view.getRootView().getContext());
+                SharedPreferences pref = view.getContext().getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edt = pref.edit();
+                String s=pref.getString("username",null);
+                cuser=s;
+
+
 
              name=myListData.getname().toString().trim();
              phone=myListData.getphone().toString().trim();
@@ -107,6 +115,8 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
 
         values.put(DbHelper.KEY_NAME,name);
         values.put(DbHelper.KEY_PHONE,phone );
+        values.put(DbHelper.KEY_CUSER,cuser);
+
 
         dataBase.insert(DbHelper.TABLE_NAME, null, values);
         dataBase.close();

@@ -1,6 +1,8 @@
 package com.example.button;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static DbHelper mInstance = null;
+    Context context;
     static String DATABASE_NAME="userdata";
     public static final String TABLE_NAME="contacts";
     public static final String TABLE_NAME2="user";
@@ -21,10 +24,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String KEY_ID="id";
     public static final String KEY_ID2="id2";
+    public String cuser;
+
+    private DbHelper mHelper;
+    private SQLiteDatabase dataBase;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-
+        this.context=context;
     }
 
     public static DbHelper getInstance(Context ctx) {
@@ -37,7 +44,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_NAME+" TEXT, "+KEY_PHONE+" TEXT)";
+        String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_NAME+" TEXT, "+KEY_PHONE+" TEXT, "+KEY_CUSER+" TEXT)";
 
         String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT)";
         db.execSQL(CREATE_TABLE);
@@ -52,9 +59,26 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public long getUserCount() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        long count = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
-        db.close();
+
+        SharedPreferences pref = context.getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edt = pref.edit();
+        String s=pref.getString("username",null);
+        cuser=s;
+
+        mHelper = DbHelper.getInstance(context);
+
+        long count=0;
+
+        dataBase = mHelper.getWritableDatabase();
+        Cursor mCursor = dataBase.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME +" WHERE " +DbHelper.KEY_CUSER+ " = + '"+cuser+"'", null);
+
+        if (mCursor.moveToFirst()) {
+            do {
+                count++;
+
+            } while (mCursor.moveToNext());
+        }
+
         return count;
     }
 

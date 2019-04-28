@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
+            RelativeLayout layout = (RelativeLayout) findViewById(R.id.main_layout);
+            layout.removeAllViewsInLayout();
             finish();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }

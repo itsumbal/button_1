@@ -60,6 +60,7 @@ public class FragmentHome extends Fragment {
     String locProvider;
     LocationManager locMgr;
     public  static final int RequestPermissionCode  = 1 ;
+    String cuser;
 
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -73,6 +74,10 @@ public class FragmentHome extends Fragment {
 
         locator = Locator.getLocator(getActivity());
         mHelper = DbHelper.getInstance(getContext());
+
+        SharedPreferences pref = getContext().getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edt = pref.edit();
+        cuser=pref.getString("username",null);
 
 
         ImageButton panic = (ImageButton) view.findViewById(R.id.btnSOS);
@@ -99,6 +104,7 @@ public class FragmentHome extends Fragment {
                                 RequestPermissionCode);
 
                     }
+
                 } else {
                     contact_list = getAllContacts();
                     SmsManager smsMan = SmsManager.getDefault();
@@ -164,25 +170,6 @@ public class FragmentHome extends Fragment {
         }
     }
 
-    private Location getLastKnownLocation() {
-        Location l = null;
-        LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        List<String> providers = mLocationManager.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                l = mLocationManager.getLastKnownLocation(provider);
-            }
-            if (l == null) {
-                continue;
-            }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                bestLocation = l;
-            }
-        }
-        return bestLocation;
-
-    }
         private void buildAlertMessageNoGps()
     {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -210,7 +197,7 @@ public class FragmentHome extends Fragment {
         contact_list = new ArrayList<HashMap<String, String>>();
 
         dataBase = mHelper.getWritableDatabase();
-        Cursor cursor = dataBase.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME, null);
+        Cursor cursor = dataBase.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME +" WHERE " +DbHelper.KEY_CUSER+ " = + '"+cuser+"'", null);
 
         if (cursor.moveToFirst()) {
             do {
