@@ -21,6 +21,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String KEY_USER="user_name";
     public static final String KEY_PASS="user_pass";
+    public static final String KEY_FULLNAME="full_name";
+    public static final String KEY_GENDER="user_gender";
+
 
     public static final String KEY_ID="id";
     public static final String KEY_ID2="id2";
@@ -46,7 +49,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_NAME+" TEXT, "+KEY_PHONE+" TEXT, "+KEY_CUSER+" TEXT)";
 
-        String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT)";
+        String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT, "+KEY_FULLNAME+" TEXT,"+KEY_GENDER+" TEXT)";
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE2);
 

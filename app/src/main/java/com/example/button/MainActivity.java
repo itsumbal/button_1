@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
 
-        if (id == R.id.logout) {
+        if (id == R.id.action_logout) {
             SharedPreferences preferences =getSharedPreferences("ActivityPREF",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
@@ -82,7 +82,16 @@ public class MainActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
 
+        else if(id==R.id.action_profile)
+        {
+            Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(i);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+    public void onBackPressed() {
+        finish();
+    }
 }

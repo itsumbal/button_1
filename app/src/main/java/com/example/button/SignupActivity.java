@@ -49,6 +49,16 @@ boolean flag;
                     Toast.makeText(getApplicationContext(),"Username and Password are empty",Toast.LENGTH_LONG).show();
                 }
 
+                else if(user.length() < 5)
+                {
+                    Toast.makeText(getApplicationContext(),"Username should be at least of 5 characters",Toast.LENGTH_LONG).show();
+                }
+
+                else if(pass.length() < 5)
+                {
+                    Toast.makeText(getApplicationContext(),"Password should be at least of 5 characters",Toast.LENGTH_LONG).show();
+                }
+
                 else if (pass.equals(pass2))
                 {
                         user_list=getAllUsers();

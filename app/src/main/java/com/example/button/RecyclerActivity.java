@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
@@ -35,6 +36,10 @@ public class RecyclerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyler_view);
 
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.drawable.ic_launcher);
+
 
         Button button = (Button)findViewById(R.id.button1);
         final  RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -63,14 +68,11 @@ public class RecyclerActivity extends AppCompatActivity {
 
                //finish();
 
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
-                finish();
-
+               Intent i = new Intent(getApplicationContext(),MainActivity.class);
+               startActivity(i);
+               finish();
             }
         });
-
-
 
     }
 
@@ -128,4 +130,10 @@ public class RecyclerActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    public void onBackPressed()
+    {
+        finish();
+    }
+
 }
