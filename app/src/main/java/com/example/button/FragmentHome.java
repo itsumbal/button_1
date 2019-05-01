@@ -2,6 +2,7 @@ package com.example.button;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import android.content.SharedPreferences;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -53,12 +55,9 @@ public class FragmentHome extends Fragment {
     private DbHelper mHelper;
     private SQLiteDatabase dataBase;
     private Locator locator;
-    double lat;
-    double lng;
-    long minTime;
-    float minDistance;
-    String locProvider;
-    LocationManager locMgr;
+private double lat=0.0;
+private double lng=0.0;
+
     public  static final int RequestPermissionCode  = 1 ;
     String cuser;
 
@@ -70,10 +69,10 @@ public class FragmentHome extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        final LocationManager manager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE );
 
-        locator = Locator.getLocator(getActivity());
         mHelper = DbHelper.getInstance(getContext());
+        locator = Locator.getLocator(getContext(),getActivity());
+        locator.requestUpdate(getContext(),getActivity());
 
         SharedPreferences pref = getContext().getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
         SharedPreferences.Editor edt = pref.edit();
@@ -106,25 +105,76 @@ public class FragmentHome extends Fragment {
                     }
 
                 } else {
-                    contact_list = getAllContacts();
-                    SmsManager smsMan = SmsManager.getDefault();
 
-                    if (contact_list.size() != 0)
+                    // ------- LOCATION WORK HERE ----------
+
+                    Location loc;
+
+
+                     try {
+                         loc = locator.getLocation(getContext(), getActivity());
+                         String message = "I'm in Emergency, Please come to the following address asap!\n\nADDRESS:  ";
+
+                         if (isInternetConnected(getContext()))
+                         {
+                             String add = Locator.getAddressFromLocation(loc, getActivity());
+
+                             message = message + add;
+
+                             contact_list = getAllContacts();
+                             SmsManager smsMan = SmsManager.getDefault();
+
+                             if (contact_list.size() != 0) {
+                                 for (int i = 0; i < contact_list.size(); i++) {
+                                     HashMap<String, String> hashmapData = contact_list.get(i);
+                                     String name = hashmapData.get("name");
+                                     String phone = hashmapData.get("phone");
+                                     smsMan.sendTextMessage(phone, null, message, null, null);
+                                 }
+                                 Toast.makeText(getActivity().getApplicationContext(), "Message sent to all contacts.",
+                                         Toast.LENGTH_LONG).show();
+                             } else {
+                                 Toast.makeText(getActivity().getApplicationContext(), "You don't have added any contacts yet.",
+                                         Toast.LENGTH_LONG).show();
+                             }
+
+                         }
+
+                         else  {
+                                lat=loc.getLatitude();
+                               lng=loc.getLongitude();
+
+                               String googleUrl = "http://maps.google.com/?q="+lat+","+lng;
+
+                             message = message + googleUrl;
+
+                             // Log.i("lat",Double.toString(loc.getLatitude()));
+                             // Log.i("lat1",Double.toString(loc.getLongitude()));
+
+                             contact_list = getAllContacts();
+                             SmsManager smsMan = SmsManager.getDefault();
+
+                             if (contact_list.size() != 0) {
+                                 for (int i = 0; i < contact_list.size(); i++) {
+                                     HashMap<String, String> hashmapData = contact_list.get(i);
+                                     String name = hashmapData.get("name");
+                                     String phone = hashmapData.get("phone");
+                                     smsMan.sendTextMessage(phone, null, message, null, null);
+                                 }
+                                 Toast.makeText(getActivity().getApplicationContext(), "Message sent to all contacts.",
+                                         Toast.LENGTH_LONG).show();
+                             } else {
+                                 Toast.makeText(getActivity().getApplicationContext(), "You don't have added any contacts yet.",
+                                         Toast.LENGTH_LONG).show();
+                             }
+
+                         }
+                     }
+                    catch(Locator.NoPositionProvidersException e)
                     {
-                        for(int i=0; i<contact_list.size(); i++)
-                        {
-                            HashMap<String, String> hashmapData = contact_list.get(i);
-                            String name = hashmapData.get("name");
-                            String phone = hashmapData.get("phone");
-                            smsMan.sendTextMessage(phone,null,"Test Application",null,null);
-                        }
-                        Toast.makeText(getActivity().getApplicationContext(), "Message sent to all contacts.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(getActivity().getApplicationContext(), "You don't have added any contacts yet.",
-                                Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getActivity().getApplicationContext(), "GPS or network provider not enabled",
+                         //     Toast.LENGTH_LONG).show();
+                        showSettingsAlert();
                     }
                 }
 
@@ -134,20 +184,6 @@ public class FragmentHome extends Fragment {
         return view;
     }
 
-
-    public boolean internetConnetion()
-    {
-
-        ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
-        else
-            {
-            return false;
-        }
-    }
 
     public void sendSMS(String name, String phone, String message)
     {
@@ -231,6 +267,58 @@ public class FragmentHome extends Fragment {
             // other 'case' lines to check for other
             // permissions this app might request.
         }
+    }
+
+    public static boolean isInternetConnected (Context ctx)
+    {
+        ConnectivityManager connectivityMgr = (ConnectivityManager) ctx
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = connectivityMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = connectivityMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifi != null) {
+            if (wifi.isConnected()) {
+                return true;
+            }
+        }
+        if (mobile != null) {
+            if (mobile.isConnected()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void showSettingsAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Location services disabled");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Please enable them in the settings");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                getContext().startActivity(intent);
+
+            }
+        });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 }
 
