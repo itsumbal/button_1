@@ -3,6 +3,7 @@ package com.example.button;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,12 +66,14 @@ public class ProfileActivity extends AppCompatActivity {
         TextView username = (TextView) findViewById(R.id.puser1);
         username.setText(cuser);
 
-         name = (TextView) findViewById(R.id.pname1);
-         pass = (TextView) findViewById(R.id.ppass1);
-         gender = (TextView) findViewById(R.id.pgender1);
 
 
-         // ------------- EDIT NAME
+        name = (TextView) findViewById(R.id.pname1);
+        pass = (TextView) findViewById(R.id.ppass1);
+        gender = (TextView) findViewById(R.id.pgender1);
+
+
+        // ------------- EDIT NAME
 
         editText = new EditText(this);
         dialog = new AlertDialog.Builder(this).create();
@@ -84,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
                 sa=editText.getText().toString();
 
                 if(sa.isEmpty())
-                Toast.makeText(getApplicationContext(),"name cannot be empty",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"name cannot be empty",Toast.LENGTH_LONG).show();
 
                 else if(sa.length()<4 || sa.length()>24)
                     Toast.makeText(getApplicationContext(),"name is too long or short",Toast.LENGTH_LONG).show();
@@ -94,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
                     saveName();
                     //showProfileData();
                     name.setText(editText.getText().toString());
-                    }
+                }
             }
         });
 
@@ -102,17 +106,17 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editText.setText(name.getText());
-              dialog.show();
+                dialog.show();
             }
         });
 
 
-    // ------ EDIT PASSWORD
+        // ------ EDIT PASSWORD
 
         editText1 = new EditText(this);
         dialog1 = new AlertDialog.Builder(this).create();
 
-        dialog1.setTitle("Edit the Password");
+        dialog1.setTitle("Change Password");
         dialog1.setView(editText1);
 
         dialog1.setButton(DialogInterface.BUTTON_POSITIVE, "save password", new DialogInterface.OnClickListener() {
@@ -120,15 +124,15 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String sa;
                 sa=editText1.getText().toString();
-
+                Log.i("PASSWORD","password button Listener");
                 if(sa.isEmpty())
-                Toast.makeText(getApplicationContext(),"password cannot be empty",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"password cannot be empty",Toast.LENGTH_LONG).show();
 
                 else if(sa.length()<5 || sa.length()>10)
                     Toast.makeText(getApplicationContext(),"password should be at least of 5 characters and not longer than 10 characters",Toast.LENGTH_LONG).show();
-
                 else {
-                    password = editText.getText().toString().trim();
+                    Log.i("PASSWORD","SAve hogya");
+                    password = editText1.getText().toString().trim();
                     savePassword();
                     //showProfileData();
                     pass.setText(editText1.getText().toString());
@@ -165,7 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "incorrect gender", Toast.LENGTH_LONG).show();
 
                 else {
-                    genderr = editText.getText().toString().trim();
+                    genderr = editText2.getText().toString().trim();
                     saveGender();
                     //showProfileData();
                     gender.setText(editText2.getText().toString());
@@ -189,26 +193,24 @@ public class ProfileActivity extends AppCompatActivity {
         ContentValues values=new ContentValues();
 
         values.put(DbHelper.KEY_FULLNAME,fullname);
-
-        dataBase.insert(DbHelper.TABLE_NAME2, null, values);
-
-        dataBase.close();
+        dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
+        //dataBase.close();
     }
 
     void savePassword()
     {
         dataBase=mHelper.getWritableDatabase();
         ContentValues values=new ContentValues();
-
         values.put(DbHelper.KEY_PASS,password);
-
-        dataBase.insert(DbHelper.TABLE_NAME2, null, values);
-
+        //dataBase.insert(DbHelper.TABLE_NAME2, null, values);
         // ERROR WHILE UPDATING DATABASE IN EVERY SAVE FUNCTION
+        Log.i("PASSWORD",DbHelper.TABLE_NAME2);
+        Log.i("PASSWORD",cuser);
+        Log.i("PASSWORD",password);
 
-      //  dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER + " = " + "'" + cuser + "'", null);
-
-        dataBase.close();
+        dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
+        Log.i("PASSWOD","Password saved");
+        //dataBase.close();
     }
 
     void saveGender()
@@ -218,9 +220,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         values.put(DbHelper.KEY_GENDER,genderr);
 
-        dataBase.insert(DbHelper.TABLE_NAME2, null, values);
+        dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
 
-        dataBase.close();
+        // dataBase.close();
     }
 
     public void showProfileData() {
@@ -247,14 +249,14 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         pass.setText(password);
-            name.setText(fullname);
-            gender.setText(gender_);
+        name.setText(fullname);
+        gender.setText(gender_);
 
-            if(name.getText().toString().isEmpty())
-                name.setText("enter name");
+        if(name.getText().toString().isEmpty())
+            name.setText("enter name");
 
-            if(gender.getText().toString().isEmpty())
-                gender.setText("enter gender");
+        if(gender.getText().toString().isEmpty())
+            gender.setText("enter gender");
 
         cursor.close();
 

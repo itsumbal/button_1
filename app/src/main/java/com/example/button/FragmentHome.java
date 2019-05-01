@@ -50,13 +50,12 @@ public class FragmentHome extends Fragment {
 
 
     ArrayList<HashMap<String,String>> contact_list;
-    GPSTracker gps;
 
     private DbHelper mHelper;
     private SQLiteDatabase dataBase;
     private Locator locator;
-private double lat=0.0;
-private double lng=0.0;
+    private double lat=0.0;
+    private double lng=0.0;
 
     public  static final int RequestPermissionCode  = 1 ;
     String cuser;
@@ -113,12 +112,12 @@ private double lng=0.0;
 
                      try {
                          loc = locator.getLocation(getContext(), getActivity());
+                         String add = Locator.getAddressFromLocation(loc, getActivity());
+
                          String message = "I'm in Emergency, Please come to the following address asap!\n\nADDRESS:  ";
 
                          if (isInternetConnected(getContext()))
                          {
-                             String add = Locator.getAddressFromLocation(loc, getActivity());
-
                              message = message + add;
 
                              contact_list = getAllContacts();
