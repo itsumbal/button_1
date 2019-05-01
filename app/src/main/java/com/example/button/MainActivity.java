@@ -1,16 +1,21 @@
 package com.example.button;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
 
     @Override
@@ -21,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.drawable.ic_launcher);
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("HOME"));
@@ -53,17 +59,39 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+
+        if (id == R.id.action_logout) {
+            SharedPreferences preferences =getSharedPreferences("ActivityPREF",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+            RelativeLayout layout = (RelativeLayout) findViewById(R.id.main_layout);
+            layout.removeAllViewsInLayout();
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        }
+
+        else if(id==R.id.action_profile)
+        {
+            Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed() {
+        finish();
     }
 }

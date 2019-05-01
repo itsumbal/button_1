@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.button.Choose_Contacts_Fragment">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:text="ADD CONTACTS"/>
+
+    <Button
+        android:layout_below="@+id/text1"
+        android:id="@+id/fromphone"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:text="From Phone"/>
+
+    <Button
+        android:id="@+id/manually"
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/fromphone"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:text="Manually"/>
+
+</RelativeLayout>

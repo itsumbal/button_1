@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="40dp"
+    android:paddingTop="40dp"
+    android:paddingStart="40dp"
+    android:paddingEnd="40dp">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="40dp"
+        android:text="USER PROFILE"
+        android:id="@+id/user_profile"
+        android:textColor="#EEEEEE"
+        android:background="#ee1d1d"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            android:textSize="25dp"
+            android:text="Name:"
+            android:textStyle="bold"
+            android:id="@+id/pname"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            android:layout_marginLeft="135dp"
+            android:textSize="25dp"
+            android:hint="enter name"
+            android:textStyle="normal"
+            android:id="@+id/pname1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp"
+            android:text="Username:"
+            android:textStyle="bold"
+            android:id="@+id/puser"
+            android:layout_below="@+id/pname"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="135dp"
+            android:textSize="25dp"
+            android:text="username"
+            android:textStyle="normal"
+            android:id="@+id/puser1"
+            android:layout_below="@+id/pname1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp"
+            android:text="Password:"
+            android:textStyle="bold"
+            android:id="@+id/ppass"
+            android:layout_below="@+id/puser"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="135dp"
+            android:textSize="25dp"
+            android:inputType="textPassword"
+            android:text="password"
+            android:textStyle="normal"
+            android:id="@+id/ppass1"
+            android:layout_below="@+id/puser1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp"
+            android:text="Gender:"
+            android:textStyle="bold"
+            android:id="@+id/pgender"
+            android:layout_below="@+id/ppass1"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="135dp"
+            android:textSize="25dp"
+            android:hint="enter gender"
+            android:textStyle="normal"
+            android:id="@+id/pgender1"
+            android:layout_below="@+id/ppass1"
+            />
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

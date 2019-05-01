@@ -26,7 +26,7 @@
             tools:ignore="UnknownId">
 
             <TextView
-                android:id="@+id/txtNama"
+                android:id="@+id/ltxtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12px"
@@ -40,7 +40,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtId"
+                android:id="@+id/ltxtid"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,11 +55,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtNoTelp"
+                android:id="@+id/ltxtPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/txtNama"
+                android:layout_below="@+id/ltxtName"
                 android:gravity="left"
                 android:paddingLeft="5dp"
                 android:text="+628550604004"

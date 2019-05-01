@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+
     <RelativeLayout
         android:id="@+id/rl3"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
+        <FrameLayout
+            android:id="@+id/frameLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <ListView
             android:id="@+id/lvWhitelist"
@@ -19,7 +25,7 @@
 
         <Button
             android:layout_alignParentRight="true"
-            android:id="@+id/btnAddKontak"
+            android:id="@+id/btnAddContact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -28,7 +34,6 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/btn_flat_blue_rounded_shadow"
             android:alpha="0.9"
-            android:onClick="response"
             android:padding="3dp"
             android:drawableTop="@drawable/plus"
             android:drawablePadding="-16dp"
