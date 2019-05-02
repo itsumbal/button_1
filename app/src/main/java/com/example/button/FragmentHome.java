@@ -171,9 +171,9 @@ public class FragmentHome extends Fragment {
                      }
                     catch(Locator.NoPositionProvidersException e)
                     {
-                       // Toast.makeText(getActivity().getApplicationContext(), "GPS or network provider not enabled",
-                         //     Toast.LENGTH_LONG).show();
-                        showSettingsAlert();
+                        Toast.makeText(getActivity().getApplicationContext(), "GPS not enabled",
+                             Toast.LENGTH_LONG).show();
+                       // showSettingsAlert();
                     }
                 }
 

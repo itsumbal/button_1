@@ -81,20 +81,20 @@ public class Locator extends Service implements android.location.LocationListene
         Location tmpLoc = null;
         Location ret = new Location("");
 
-        if (ContextCompat.checkSelfPermission(c, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(c, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             context.startActivity(intent);
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(a,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
                     // permission granted
 
             } else {
                 ActivityCompat.requestPermissions(a,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         RequestPermissionCode);
             }
 
