@@ -4,8 +4,6 @@
     tools:context="com.example.button.HomeActivity">
     <item android:id="@+id/action_profile" android:title="View Profile"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_database" android:title="View Database"
-        android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_logout" android:title="Logout"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
