@@ -20,7 +20,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_NAME="contacts";
     public static final String TABLE_NAME2="user";
-    public static final String TABLE_NAME3="accidents";
 
 
     public static final String KEY_NAME="name";
@@ -31,15 +30,11 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String KEY_PASS="user_pass";
     public static final String KEY_FULLNAME="full_name";
     public static final String KEY_GENDER="user_gender";
-
-    public static final String KEY_USERNAME="user_name";
-    public static final String KEY_LOCATION="acc_location";
-    public static final String KEY_TIME="acc_time";
-
+    public static final String KEY_MSG="user_msg";
 
     public static final String KEY_ID="id";
     public static final String KEY_ID2="id2";
-    public static final String KEY_ID3="id3";
+
 
     public String cuser;
 
@@ -64,14 +59,12 @@ public class DbHelper extends SQLiteOpenHelper {
 
         String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_NAME+" TEXT, "+KEY_PHONE+" TEXT, "+KEY_CUSER+" TEXT)";
 
-        String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT, "+KEY_FULLNAME+" TEXT,"+KEY_GENDER+" TEXT)";
-
-        String CREATE_TABLE3="CREATE TABLE "+TABLE_NAME3+" ("+KEY_ID3+" INTEGER PRIMARY KEY, "+KEY_USERNAME+" TEXT, "+KEY_LOCATION+" TEXT, "+KEY_TIME+" TEXT);";
+        String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT, "+KEY_FULLNAME+" TEXT,"+KEY_GENDER+" TEXT, "+KEY_MSG+" TEXT)";
 
 
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE2);
-        db.execSQL(CREATE_TABLE3);
+
 
     }
 

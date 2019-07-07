@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,6 +74,7 @@ public class FragmentHome extends Fragment {
         locator = Locator.getLocator(getContext(),getActivity());
         locator.requestUpdate(getContext(),getActivity());
 
+
         SharedPreferences pref = getContext().getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
         SharedPreferences.Editor edt = pref.edit();
         cuser=pref.getString("username",null);
@@ -114,10 +116,26 @@ public class FragmentHome extends Fragment {
                          loc = locator.getLocation(getContext(), getActivity());
                          String add = Locator.getAddressFromLocation(loc, getActivity());
 
-                         String message = "I'm in Emergency, Please come to the following address asap!\n\nADDRESS:  ";
+                         String message="";
+                         String link="";
+                         // Retrieve Message from DataBase.
+
+                         dataBase = mHelper.getReadableDatabase();
+                         Cursor cursor = dataBase.rawQuery("SELECT " +DbHelper.KEY_MSG+ " FROM " + DbHelper.TABLE_NAME2 + " WHERE " + DbHelper.KEY_USER + " = " + "'" + cuser + "'", null);
+
+                         Log.i("cursor2","i am here");
+
+                         if(cursor!=null) {
+                             if (cursor.moveToNext()) {
+                                 Log.i("cursor", "chal gaya ");
+                                 message = cursor.getString(0);
+                             }
+                         }
+                       //  String message = "I'm in Emergency, Please come to the following address asap!\n\nADDRESS:  ";
 
                          if (isInternetConnected(getContext()))
                          {
+                             message= message+ "\n\nADDRESS: ";
                              message = message + add;
 
                              contact_list = getAllContacts();
@@ -145,7 +163,10 @@ public class FragmentHome extends Fragment {
 
                                String googleUrl = "http://maps.google.com/?q="+lat+","+lng;
 
+                             message= message+ "\n\nADDRESS: ";
                              message = message + googleUrl;
+
+
 
                              // Log.i("lat",Double.toString(loc.getLatitude()));
                              // Log.i("lat1",Double.toString(loc.getLongitude()));

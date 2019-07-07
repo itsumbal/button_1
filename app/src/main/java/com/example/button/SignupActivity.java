@@ -10,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +26,8 @@ public class SignupActivity extends Activity {
     ArrayList<HashMap<String,String>> user_list;
 boolean flag;
 
+String cuser="";
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
@@ -33,6 +38,7 @@ boolean flag;
         final EditText username = (EditText) findViewById(R.id.susername);
         final EditText password = (EditText) findViewById(R.id.spassword);
         final EditText cpassword = (EditText) findViewById(R.id.cpassword);
+        TextView loginback = (TextView) findViewById(R.id.loginback);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +82,9 @@ boolean flag;
                     }
                     if(flag==false)
                     {
+                        cuser=user;
                         saveData();
+                        saveCustomMsg();
                         Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                         startActivity(i);
                         finish();
@@ -91,6 +99,30 @@ boolean flag;
                 }
             }
         });
+
+        loginback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+
+    }
+
+    void saveCustomMsg()
+    {
+        String msgg="I'm in Emergency, Please come to the following address asap!";
+
+        dataBase=mHelper.getWritableDatabase();
+        ContentValues values=new ContentValues();
+
+        values.put(DbHelper.KEY_MSG,msgg);
+
+        dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
+   dataBase.close();
     }
 
     void saveData()

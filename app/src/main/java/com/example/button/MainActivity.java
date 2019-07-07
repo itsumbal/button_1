@@ -112,6 +112,12 @@ public class MainActivity extends AppCompatActivity   implements GoogleApiClient
             startActivity(i);
         }
 
+        else if(id==R.id.action_database)
+        {
+            Intent i = new Intent(MainActivity.this, AndroidDatabaseManager.class);
+            startActivity(i);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

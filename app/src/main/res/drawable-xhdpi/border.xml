@@ -4,33 +4,33 @@
   <item android:state_pressed="true" >
       <shape xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:shape="rectangle">
-	      <gradient android:startColor="#bdc3c7" 
-	    	android:endColor="#bdc3c7"
+	      <gradient android:startColor="#bec6c9"
+	    	android:endColor="#bbbb"
 	    	android:angle="270" />
 		  <corners android:radius="1dp" />
-		  <stroke android:width="1px" android:color="#c0c0c0" />
+		  <stroke android:width="1px" android:color="#bbbb" />
 	  </shape>
   </item>
   
   <item android:state_focused="true" >
       <shape xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:shape="rectangle">
-	      <gradient android:startColor="#bdc3c7" 
-	    	android:endColor="#bdc3c7"
+	      <gradient android:startColor="#bec6c9"
+	    	android:endColor="#bbbb"
 	    	android:angle="270" />
 		  <corners android:radius="1dp" />
-		  <stroke android:width="1px" android:color="#c0c0c0" />
+		  <stroke android:width="1px" android:color="#bbbb" />
 	  </shape>
   </item>
   
   <item>
       <shape xmlns:android="http://schemas.android.com/apk/res/android"
 	  android:shape="rectangle">
-      <gradient android:startColor="#fff" 
-	    android:endColor="#fff"
+      <gradient android:startColor="#bec6c9"
+	    android:endColor="#bbbb"
 	    android:angle="270" />
 	  <corners android:radius="1dp" />
-	  <stroke android:width="1px" android:color="#c0c0c0" />
+	  <stroke android:width="1px" android:color="#bbbb" />
 	  </shape>
   </item>
 </selector>  

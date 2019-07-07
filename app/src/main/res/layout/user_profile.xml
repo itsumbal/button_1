@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:background="#458b74"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/header_cover_image"
-            android:background="#ee1d1d"
+            android:background="#458b74"
             android:elevation="4dp"
             android:paddingBottom="20dp">
 
@@ -64,12 +64,12 @@
 
 
         <RelativeLayout
+            android:background="#bbbb"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/profile_layout"
             android:layout_margin="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
             android:elevation="4dp"
             android:orientation="vertical"
             android:paddingTop="20dp"
@@ -151,6 +151,18 @@
                 android:id="@+id/pgender"
                 android:layout_below="@+id/ppass1"
                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="20dp"
+                android:text="Message:"
+                android:textStyle="bold"
+                android:id="@+id/customtext"
+                android:layout_below="@+id/pgender"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -161,6 +173,18 @@
                 android:id="@+id/pgender1"
                 android:layout_below="@+id/ppass1"
                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="135dp"
+                android:textSize="20dp"
+                android:textStyle="normal"
+                android:id="@+id/customtext1"
+                android:layout_below="@+id/pgender1"
+                />
+
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

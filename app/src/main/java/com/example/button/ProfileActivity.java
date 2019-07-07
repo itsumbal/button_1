@@ -29,19 +29,22 @@ public class ProfileActivity extends AppCompatActivity {
     private  String fullname;
     private String genderr;
     private  String password;
+    private String msg;
 
     public AlertDialog dialog;
     public AlertDialog dialog1;
     public AlertDialog dialog2;
+    public AlertDialog dialog3;
 
     public EditText editText;
     public EditText editText1;
     public EditText editText2;
+    public EditText editText3;
 
     public TextView name;
     public  TextView gender;
     public  TextView pass;
-
+    public  TextView customText;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.pname1);
         pass = (TextView) findViewById(R.id.ppass1);
         gender = (TextView) findViewById(R.id.pgender1);
+        customText = (TextView) findViewById(R.id.customtext1);
 
 
         // ------------- EDIT NAME
@@ -185,6 +189,43 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
+    //   ----- EDIT CUSTOM MESSAGE
+
+        editText3 = new EditText(this);
+        dialog3 = new AlertDialog.Builder(this).create();
+
+        dialog3.setTitle("Edit the Message");
+        dialog3.setView(editText3);
+
+        dialog3.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String sa;
+                sa = editText3.getText().toString();
+
+                if (sa.isEmpty())
+                    Toast.makeText(getApplicationContext(), "message cannot be empty", Toast.LENGTH_LONG).show();
+
+                else {
+                    msg = editText3.getText().toString().trim();
+                    saveCustomText();
+                    //showProfileData();
+                    customText.setText(editText3.getText().toString());
+                }
+            }
+        });
+
+        customText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText3.setText(customText.getText());
+                dialog3.show();
+            }
+        });
+
+
+
     }
 
     void saveName()
@@ -210,7 +251,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
         Log.i("PASSWOD","Password saved");
-        //dataBase.close();
+        dataBase.close();
     }
 
     void saveGender()
@@ -222,40 +263,56 @@ public class ProfileActivity extends AppCompatActivity {
 
         dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
 
-        // dataBase.close();
+         dataBase.close();
+    }
+
+    void saveCustomText()
+    {
+        dataBase=mHelper.getWritableDatabase();
+        ContentValues values=new ContentValues();
+
+        values.put(DbHelper.KEY_MSG,msg);
+
+        dataBase.update(DbHelper.TABLE_NAME2, values, DbHelper.KEY_USER +"=?" ,new String[]{cuser});
+
+         dataBase.close();
     }
 
     public void showProfileData() {
         name = (TextView) findViewById(R.id.pname1);
         pass = (TextView) findViewById(R.id.ppass1);
         gender = (TextView) findViewById(R.id.pgender1);
+        customText = (TextView) findViewById(R.id.customtext1);
 
-        String password="";
-        String fullname="";
-        String gender_="";
+        String password = "";
+        String fullname = "";
+        String gender_ = "";
+        String msg1 = "";
 
         dataBase = mHelper.getReadableDatabase();
-        Cursor cursor = dataBase.rawQuery("SELECT " +DbHelper.KEY_PASS+ ", " +DbHelper.KEY_FULLNAME+ ", " +DbHelper.KEY_GENDER+ " FROM " + DbHelper.TABLE_NAME2 + " WHERE " + DbHelper.KEY_USER + " = " + "'" + cuser + "'", null);
+        Cursor cursor = dataBase.rawQuery("SELECT " + DbHelper.KEY_PASS + ", " + DbHelper.KEY_FULLNAME + ", " + DbHelper.KEY_GENDER + ", " + DbHelper.KEY_MSG + " FROM " + DbHelper.TABLE_NAME2 + " WHERE " + DbHelper.KEY_USER + " = " + "'" + cuser + "'", null);
 
-        Log.i("cursor2","i am here");
+        Log.i("cursor2", "i am here");
 
-        if(cursor!=null) {
+        if (cursor != null) {
             if (cursor.moveToNext()) {
                 Log.i("cursor", "chal gaya ");
                 password = cursor.getString(0);
                 fullname = cursor.getString(1);
                 gender_ = cursor.getString(2);
+                msg1 = cursor.getString(3);
             }
         }
 
         pass.setText(password);
         name.setText(fullname);
         gender.setText(gender_);
+        customText.setText(msg1);
 
-        if(name.getText().toString().isEmpty())
+        if (name.getText().toString().isEmpty())
             name.setText("enter name");
 
-        if(gender.getText().toString().isEmpty())
+        if (gender.getText().toString().isEmpty())
             gender.setText("enter gender");
 
         cursor.close();
