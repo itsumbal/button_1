@@ -6,7 +6,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:layout_alignParentBottom="true"
-    android:background="#ff4646"
+    android:background="#458b74"
 
 
     tools:context="com.example.button.LoginActivity">

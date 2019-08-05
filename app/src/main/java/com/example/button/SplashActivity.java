@@ -24,7 +24,7 @@ public class SplashActivity extends Activity {
 
         setContentView(R.layout.splash);
         LinearLayout ll2 = (LinearLayout) findViewById(R.id.ll);
-        ll2.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.splash2));
+        ll2.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.splash3));
         new Handler().postDelayed(new Runnable() {
             public void run() {
 

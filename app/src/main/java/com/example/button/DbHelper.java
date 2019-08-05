@@ -4,16 +4,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.MatrixCursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
 
     private static DbHelper mInstance = null;
     Context context;
     static String DATABASE_NAME="userdata";
+
     public static final String TABLE_NAME="contacts";
     public static final String TABLE_NAME2="user";
+
 
     public static final String KEY_NAME="name";
     public static final String KEY_PHONE="phone";
@@ -23,10 +30,12 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String KEY_PASS="user_pass";
     public static final String KEY_FULLNAME="full_name";
     public static final String KEY_GENDER="user_gender";
-
+    public static final String KEY_MSG="user_msg";
 
     public static final String KEY_ID="id";
     public static final String KEY_ID2="id2";
+
+
     public String cuser;
 
     private DbHelper mHelper;
@@ -47,11 +56,15 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String CREATE_TABLE="CREATE TABLE "+TABLE_NAME+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_NAME+" TEXT, "+KEY_PHONE+" TEXT, "+KEY_CUSER+" TEXT)";
 
-        String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT, "+KEY_FULLNAME+" TEXT,"+KEY_GENDER+" TEXT)";
+        String CREATE_TABLE2="CREATE TABLE "+TABLE_NAME2+" ("+KEY_ID2+" INTEGER PRIMARY KEY, "+KEY_USER+" TEXT, "+KEY_PASS+" TEXT, "+KEY_FULLNAME+" TEXT,"+KEY_GENDER+" TEXT, "+KEY_MSG+" TEXT)";
+
+
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE2);
+
 
     }
 
@@ -83,6 +96,51 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         return count;
+    }
+
+    //////////////////////////to see database
+    public ArrayList<Cursor> getData(String Query){
+        //get writable database
+        SQLiteDatabase sqlDB = this.getWritableDatabase();
+        String[] columns = new String[] { "message" };
+        //an array list of cursor to save two cursors one has results from the query
+        //other cursor stores error message if any errors are triggered
+        ArrayList<Cursor> alc = new ArrayList<Cursor>(2);
+        MatrixCursor Cursor2= new MatrixCursor(columns);
+        alc.add(null);
+        alc.add(null);
+
+        try{
+            String maxQuery = Query ;
+            //execute the query results will be save in Cursor c
+            Cursor c = sqlDB.rawQuery(maxQuery, null);
+
+            //add value to cursor2
+            Cursor2.addRow(new Object[] { "Success" });
+
+            alc.set(1,Cursor2);
+            if (null != c && c.getCount() > 0) {
+
+                alc.set(0,c);
+                c.moveToFirst();
+
+                return alc ;
+            }
+            return alc;
+        } catch(SQLException sqlEx){
+            Log.d("printing exception", sqlEx.getMessage());
+            //if any exceptions are triggered save the error message to cursor an return the arraylist
+            Cursor2.addRow(new Object[] { ""+sqlEx.getMessage() });
+            alc.set(1,Cursor2);
+            return alc;
+        } catch(Exception ex){
+            Log.d("printing exception", ex.getMessage());
+
+            //if any exceptions are triggered save the error message to cursor an return the arraylist
+            Cursor2.addRow(new Object[] { ""+ex.getMessage() });
+            alc.set(1,Cursor2);
+            return alc;
+        }
     }
 
 }

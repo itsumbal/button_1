@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,13 +51,12 @@ public class FragmentHome extends Fragment {
 
 
     ArrayList<HashMap<String,String>> contact_list;
-    GPSTracker gps;
 
     private DbHelper mHelper;
     private SQLiteDatabase dataBase;
     private Locator locator;
-private double lat=0.0;
-private double lng=0.0;
+    private double lat=0.0;
+    private double lng=0.0;
 
     public  static final int RequestPermissionCode  = 1 ;
     String cuser;
@@ -73,6 +73,7 @@ private double lng=0.0;
         mHelper = DbHelper.getInstance(getContext());
         locator = Locator.getLocator(getContext(),getActivity());
         locator.requestUpdate(getContext(),getActivity());
+
 
         SharedPreferences pref = getContext().getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
         SharedPreferences.Editor edt = pref.edit();
@@ -113,12 +114,28 @@ private double lng=0.0;
 
                      try {
                          loc = locator.getLocation(getContext(), getActivity());
-                         String message = "I'm in Emergency, Please come to the following address asap!\n\nADDRESS:  ";
+                         String add = Locator.getAddressFromLocation(loc, getActivity());
+
+                         String message="";
+                         String link="";
+                         // Retrieve Message from DataBase.
+
+                         dataBase = mHelper.getReadableDatabase();
+                         Cursor cursor = dataBase.rawQuery("SELECT " +DbHelper.KEY_MSG+ " FROM " + DbHelper.TABLE_NAME2 + " WHERE " + DbHelper.KEY_USER + " = " + "'" + cuser + "'", null);
+
+                         Log.i("cursor2","i am here");
+
+                         if(cursor!=null) {
+                             if (cursor.moveToNext()) {
+                                 Log.i("cursor", "chal gaya ");
+                                 message = cursor.getString(0);
+                             }
+                         }
+                       //  String message = "I'm in Emergency, Please come to the following address asap!\n\nADDRESS:  ";
 
                          if (isInternetConnected(getContext()))
                          {
-                             String add = Locator.getAddressFromLocation(loc, getActivity());
-
+                             message= message+ "\n\nADDRESS: ";
                              message = message + add;
 
                              contact_list = getAllContacts();
@@ -146,7 +163,10 @@ private double lng=0.0;
 
                                String googleUrl = "http://maps.google.com/?q="+lat+","+lng;
 
+                             message= message+ "\n\nADDRESS: ";
                              message = message + googleUrl;
+
+
 
                              // Log.i("lat",Double.toString(loc.getLatitude()));
                              // Log.i("lat1",Double.toString(loc.getLongitude()));
@@ -172,9 +192,9 @@ private double lng=0.0;
                      }
                     catch(Locator.NoPositionProvidersException e)
                     {
-                       // Toast.makeText(getActivity().getApplicationContext(), "GPS or network provider not enabled",
-                         //     Toast.LENGTH_LONG).show();
-                        showSettingsAlert();
+                        Toast.makeText(getActivity().getApplicationContext(), "GPS not enabled",
+                             Toast.LENGTH_LONG).show();
+                       // showSettingsAlert();
                     }
                 }
 

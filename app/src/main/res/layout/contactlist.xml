@@ -62,8 +62,7 @@
                 android:layout_below="@+id/ltxtName"
                 android:gravity="left"
                 android:paddingLeft="5dp"
-                android:text="+628550604004"
-                android:textColor="#7f8c8d" />
+                android:text="+628550604004" />
 
         </RelativeLayout>
     </RelativeLayout>
